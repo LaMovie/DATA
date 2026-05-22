@@ -1,1 +1,38 @@
+name: Guardar Registro en TXT
 
+# El flujo se activa solo cuando se abre un "Issue" (reporte)
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  actualizar-archivo:
+    runs-on: ubuntu-latest
+    # Solo se ejecuta si el título del issue coincide con nuestro formulario
+    if: startsWith(github.event.issue.title, 'NUEVO_REGISTRO:')
+    
+    steps:
+    - name: Clonar el repositorio
+      uses: actions/checkout@v4
+
+    - name: Añadir datos al archivo .txt
+      run: |
+        # Extrae el cuerpo del issue (los datos del formulario)
+        echo "${{ github.event.issue.body }}" >> datos.txt
+        # Añade un salto de línea decorativo o separador
+        echo "------------------------" >> datos.txt
+
+    - name: Guardar cambios en el repositorio (Commit y Push)
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action Bot"
+        git add datos.txt
+        git commit -m "Automatización: Nuevo registro añadido por formulario"
+        git push
+        
+    - name: Cerrar el Issue automáticamente
+      run: |
+        gh issue close ${{ github.event.issue.number }} --comment "Datos guardados exitosamente en datos.txt"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
