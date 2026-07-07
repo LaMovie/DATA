@@ -1,10 +1,10 @@
 // UniversalSearch.js
 export class UniversalSearch {
     constructor({ input, list, itemsSelector, onSelect }) {
-        this.input = input;
-        this.list = list;
-        this.items = document.querySelectorAll(itemsSelector);
-        this.onSelect = onSelect; // Esta es la "acción" que ocurrirá al elegir algo
+   this.input = typeof input === 'string' ? document.querySelector(input) : input;
+   this.list = typeof list === 'string' ? document.querySelector(list) : list;
+   this.items = document.querySelectorAll(itemsSelector);
+   this.onSelect = onSelect; // Esta es la "acción" que ocurrirá al elegir algo
 
         this.init();
     }
